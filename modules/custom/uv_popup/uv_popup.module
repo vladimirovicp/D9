@@ -1,0 +1,69 @@
+<?php
+
+use \Drupal\node\Entity\NodeType;
+
+use Drupal\Component\Serialization\Json;
+use \Drupal\Core\Entity\EntityInterface;
+use \Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+
+function uv_popup_entity_extra_field_info(){
+  $extra =[];
+
+  foreach (NodeType::loadMultiple() as $nodeType){
+    //dpm(gettype());
+    //dpm($nodeType->gettype());
+    if($nodeType->id()=='page'){
+      $extra['node'][$nodeType->id()]['display']['short_info'] = [
+        'label' => t('Short Info'),
+        'description' => 'Short Info Desc',
+        'weight' => 0,
+        'visible' => FALSE,
+      ];
+    }
+
+  }
+
+  return $extra;
+}
+
+function uv_popup_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode){
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $entity;
+
+  if($display->getComponent('short_info')){
+    $url = Url::fromRoute('uv_popup.node_short_info', [
+      'node' => $node->id()
+    ]);
+    $link_options = array(
+      'attributes' => array(
+        'class' => array(
+          'use-ajax',
+        ),
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => Json::encode(
+          [
+            'width' => 360,
+          ]
+        ),
+      ),
+    );
+
+    //dpm($link_options);
+    //dpm($url);
+    //dpm($url);
+
+
+    $url->setOptions($link_options);
+
+
+    //dpm('1234');
+    //dpm($url);
+
+    $link = Link::fromTextAndUrl(t('Content Info'), $url) -> toString();
+    $build['short_info']['#markup'] = '<div class="field field-extra-short-info">' . $link . '</div>';
+
+
+  }
+}

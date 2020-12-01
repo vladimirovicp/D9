@@ -1,0 +1,12 @@
+uv_popup.node_short_info:
+  path: '/node/{node}/short-info'
+  defaults:
+    _controller:  Drupal\uv_popup\Controller\UvPopupController::index
+    _title: 'Node Autor'
+  requirements:
+    _permission: 'access content'
+    _entity_access: 'node.view'
+  options:
+    parameters:
+      node:
+        type: entity:node
