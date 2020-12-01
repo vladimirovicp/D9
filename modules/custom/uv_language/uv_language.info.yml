@@ -1,0 +1,6 @@
+name: "language hooks"
+type: module
+description: "Hooks with languages"
+core_version_requirement: ^9
+package: 'Utilvideo'
+

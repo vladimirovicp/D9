@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Implements hook_language_switch_links_alter().
+ */
+function uv_language_language_switch_links_alter(array &$links, $type, \Drupal\Core\Url $url) {
+  foreach ($links as $key => $link){
+    $links[$key]['title'] = $link['language'] -> getId();
+  }
+}
